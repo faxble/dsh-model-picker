@@ -19,7 +19,8 @@
     "README.en.md",
     "screenshot_zh.png",
     "screenshot_en.png",
-    "button.png"
+    "button.png",
+    "screenshots.json"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
