@@ -129,7 +129,8 @@ dsh-model-picker/
   variables, and switching light/dark themes needs no reload.
 - Modifies no DSH core code; `conversation.input.right` currently has no other
   consumers, so registering it shadows nothing.
-- Chinese UI, copy follows the system language (zh / en).
+- UI copy is **bilingual (zh / en)** and follows the DSH system language
+  automatically — non-Chinese users can use it as-is.
 - Theme note: **do not use `--dsw-alias-brand-text` for selected-row text color**
   — its semantics is "text **on** the brand color block" (designed for light
   themes); under dark themes it resolves to a dark color that becomes unreadable

@@ -67,6 +67,8 @@ window.__ModuleLoader__.load({
       'foot.current': '当前',
       'foot.close': '关闭',
       'provider.account': 'DeepSeek 账号',
+      'tag.text': '📝 文本',
+      'tag.image': '🖼️ 图像',
     }
     const en = {
       'trigger.label': 'Model picker',
@@ -93,6 +95,8 @@ window.__ModuleLoader__.load({
       'foot.current': 'Current',
       'foot.close': 'Close',
       'provider.account': 'DeepSeek Account',
+      'tag.text': '📝 Text',
+      'tag.image': '🖼️ Image',
     }
 
     // ── styles (theme-token driven, injected once) ───────────────────────────
@@ -676,12 +680,12 @@ window.__ModuleLoader__.load({
     }
 
     /** Capability chips for one model from the Host-declared input modalities. */
-    function tagsFor(model, group, inputMap) {
+    function tagsFor(model, group, inputMap, L) {
       const mods = inputMap !== null ? inputMap?.[group.id]?.[model.id] : undefined
       if (mods === undefined || mods.length === 0) return []
       const tags = []
-      if (mods.includes('text')) tags.push({ key: 'text', label: '📝 文本' })
-      if (mods.includes('image')) tags.push({ key: 'image', label: '🖼️ 图像' })
+      if (mods.includes('text')) tags.push({ key: 'text', label: L('tag.text') })
+      if (mods.includes('image')) tags.push({ key: 'image', label: L('tag.image') })
       return tags
     }
 
@@ -1098,7 +1102,7 @@ window.__ModuleLoader__.load({
                     h('div', { className: 'cmp-picker-row-main' },
                       h('span', { className: 'cmp-picker-row-name', title: model.name }, model.name),
                       unreasoningBadge(model) && h('span', { className: 'cmp-picker-badge' }, L('badge.reasoning')),
-                      tagsFor(model, group, inputMap).map(tag => h('span', { key: tag.key, className: 'cmp-picker-cap' }, tag.label)),
+                      tagsFor(model, group, inputMap, L).map(tag => h('span', { key: tag.key, className: 'cmp-picker-cap' }, tag.label)),
                     ),
                     selected
                       ? h('span', { className: 'cmp-picker-badge-current' },
