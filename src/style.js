@@ -418,7 +418,10 @@ export const CSS = `
   padding: 1px 7px;
   border-radius: 999px;
   background: var(--dsw-alias-brand-primary-soft, rgba(57, 100, 254, 0.12));
-  color: var(--dsw-alias-brand-text, var(--dsw-alias-brand-primary, #3964fe));
+  /* brand-text is the color for text ON the solid brand block (a light-theme
+     design value) and resolves dark in dark themes — unreadable on the soft
+     highlight. Use brand-primary (bright blue in dark themes) instead. */
+  color: var(--dsw-alias-brand-primary, #3964fe);
   font-size: 11px;
   line-height: 16px;
   font-weight: 600;
