@@ -24,6 +24,9 @@ the other updates instantly").
 - **Selection window** (centered modal, themed with CSS variables, adapts to
   light/dark themes):
   - **Header**: title + provider/model count + close;
+  - **Recently used**: models you picked before (up to 8, auto-recorded,
+    persisted locally), each row showing **`provider · model`** (e.g.
+    `Volcengine · deepseek-v4-flash-ga`) — one click switches back;
   - **Provider filter**: custom dropdown to the left of the search box (all
     providers / a single provider), rendered with theme colors (no native
     `<select>`, avoiding a glaring system panel under dark themes);
@@ -32,7 +35,8 @@ the other updates instantly").
   - **List**: grouped by provider (DeepSeek account / official first), groups with
     a color bar and a count badge; each row shows the **full model name** +
     **capability tags** + a "reasoning" badge + a "current" badge + a selection check;
-  - **Footer**: current model summary + close button;
+    large lists render lazily on scroll (opens faster);
+  - **Footer**: current model summary + **reasoning-effort picker** + close button;
   - **States**: loading (spinner), load failure (retry), per-provider load failure
     (individual messages), current model no longer routable (warning), session busy
     (dedicated copy).
