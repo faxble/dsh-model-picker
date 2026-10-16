@@ -435,6 +435,17 @@ var CSS = `
   line-height: 18px;
   color: var(--dsw-alias-label-tertiary, #8a919c);
 }
+/* Provider name shown beside the model name in MRU rows (secondary text). */
+.cmp-picker-row-provider {
+  flex: none;
+  max-width: 132px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary, #8a919c);
+}
 .cmp-picker-cap {
   flex: none;
   padding: 0 6px;
@@ -1287,6 +1298,9 @@ window.__ModuleLoader__.load({
                     "div",
                     { className: "cmp-picker-row-main" },
                     h("span", { className: "cmp-picker-row-name", title: model.name }, model.name),
+                    // Provider name beside the model name, so MRU rows are
+                    // unambiguous when the same model id exists under several providers.
+                    h("span", { className: "cmp-picker-row-provider", title: providerLabel(group, L) }, providerLabel(group, L)),
                     unreasoningBadge(model) && h("span", { className: "cmp-picker-badge" }, L("badge.reasoning")),
                     tagsFor(model, group, inputMap, L).map((tag) => h("span", { key: tag.key, className: "cmp-picker-cap" }, tag.label))
                   ),
