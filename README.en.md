@@ -14,7 +14,7 @@ the other updates instantly").
 
 ## Screenshots
 
-![Model quick picker window (dark theme)](screenshot.png)
+![Model quick picker window (dark theme, English UI)](screenshot_eng.png)
 
 ![Trigger button left of the model dropdown](button.png)
 

@@ -10,7 +10,7 @@ per-session 模型目录与 `selectModel` 提交路径（"任一端切换，另�
 
 ## 效果
 
-![模型速选窗口（深色主题）](screenshot.png)
+![模型速选窗口（深色主题，中文界面）](screenshot_zh.png)
 
 ![模型下拉左侧的触发按钮](button.png)
 
