@@ -13,9 +13,19 @@
     "index.js",
     "client.js",
     "cordis.patch.yml",
+    "install.ps1",
+    "LICENSE",
     "README.md",
-    "README.en.md"
+    "README.en.md",
+    "screenshot_zh.png",
+    "screenshot_eng.png",
+    "button.png"
   ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test \"test/**/*.test.js\"",
+    "check": "node --check client.js && node --check index.js"
+  },
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
   },
@@ -26,6 +36,26 @@
     "model-picker"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/faxble/dsh-model-picker.git"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
@@ -33,7 +63,23 @@
     "client": {
       "platform": "web",
       "immediately": true,
-      "inject": ["slots", "locale", "remote", "remote.settings"]
+      "inject": [
+        "slots",
+        "locale",
+        "remote",
+        "remote.settings"
+      ]
+    },
+    "engines": {
+      "dsh": ">=0.1.7-rc.1"
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.1.7-rc.1": "compatible"
+      }
     }
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }
