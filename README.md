@@ -58,20 +58,32 @@ per-session 模型目录与 `selectModel` 提交路径（"任一端切换，另�
 
 ## 安装
 
-两种方式任选其一。
+支持 **web 与 desktop** 两个 profile（`platform: web` 的插件在两者中均生效）。
 
-### 方式 A：通过 DSH 插件管理安装（推荐）
+### 方式 A：git clone 后本地安装（推荐）
 
-把本目录（或打成 tgz）交给 DSH 的插件管理器，安装 spec 用本地绝对路径：
-
+```sh
+git clone https://github.com/faxble/dsh-model-picker.git
+dsh plugin --profile web add /path/to/dsh-model-picker
 ```
-file:D:\Dev\VibeCoding\dsh-model-picker
+
+把 `/path/to/dsh-model-picker` 换成实际 clone 路径；桌面版把 `web` 换成
+`desktop`：
+
+```sh
+dsh plugin --profile desktop add /path/to/dsh-model-picker
 ```
 
-DSH 会把它作为 bundle 安装进当前 profile，随后在「设置 → 插件」中启用
-`dsh-model-picker`，或确认它已自动启用。
+安装后重启 DeepSeek Harness，在「设置 → 插件」中启用 `dsh-model-picker`，
+或确认它已自动启用。
 
-### 方式 B：手动加入 profile（开发者调试用）
+### 方式 B：远程直接安装（免 clone）
+
+```sh
+dsh plugin --profile web add github:faxble/dsh-model-picker
+```
+
+### 方式 C：手动加入 profile（开发者调试用）
 
 1. 在 profile（默认 `%USERPROFILE%\.dsh\profiles\desktop`）的 `package.json` 中：
    - `dependencies` 增加 `"dsh-model-picker": "file:D:\\Dev\\VibeCoding\\dsh-model-picker"`；

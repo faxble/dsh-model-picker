@@ -75,21 +75,33 @@ accordingly.
 
 ## Installation
 
-Choose either method.
+Works with both the **web and desktop** profiles (a `platform: web` plugin takes
+effect in both).
 
-### Method A: Install via DSH plugin manager (recommended)
+### Method A: git clone, then install locally (recommended)
 
-Hand this directory (or a packed tgz) to the DSH plugin manager, using the local
-absolute path as the install spec:
-
+```sh
+git clone https://github.com/faxble/dsh-model-picker.git
+dsh plugin --profile web add /path/to/dsh-model-picker
 ```
-file:D:\Dev\VibeCoding\dsh-model-picker
+
+Replace `/path/to/dsh-model-picker` with your actual clone path; for the desktop
+app, just swap `web` for `desktop`:
+
+```sh
+dsh plugin --profile desktop add /path/to/dsh-model-picker
 ```
 
-DSH installs it as a bundle into the current profile. Then enable
-`dsh-model-picker` under Settings → Plugins, or confirm it was auto-enabled.
+After installing, restart DeepSeek Harness and enable `dsh-model-picker` under
+Settings → Plugins, or confirm it was auto-enabled.
 
-### Method B: Add manually to the profile (developer/debug use)
+### Method B: Install directly from GitHub (no clone)
+
+```sh
+dsh plugin --profile web add github:faxble/dsh-model-picker
+```
+
+### Method C: Add manually to the profile (developer/debug use)
 
 1. In the profile (default `%USERPROFILE%\.dsh\profiles\desktop`) `package.json`:
    - add `"dsh-model-picker": "file:D:\\Dev\\VibeCoding\\dsh-model-picker"` to
