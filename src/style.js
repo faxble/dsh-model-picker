@@ -373,7 +373,9 @@ export const CSS = `
   line-height: 18px;
   color: var(--dsw-alias-label-tertiary, #8a919c);
 }
-/* Provider name shown beside the model name in MRU rows (secondary text). */
+/* Provider prefix shown to the LEFT of the model name in MRU rows —
+   reads as "provider · model". Secondary text, capped so it never
+   crowds the model name. */
 .cmp-picker-row-provider {
   flex: none;
   max-width: 132px;
@@ -382,6 +384,10 @@ export const CSS = `
   white-space: nowrap;
   font-size: 12px;
   line-height: 18px;
+  color: var(--dsw-alias-label-tertiary, #8a919c);
+}
+.cmp-picker-row-provider::after {
+  content: ' · ';
   color: var(--dsw-alias-label-tertiary, #8a919c);
 }
 .cmp-picker-cap {

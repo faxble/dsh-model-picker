@@ -526,10 +526,11 @@ window.__ModuleLoader__.load({
                   onClick: () => { void choose(group, model) },
                 },
                   h('div', { className: 'cmp-picker-row-main' },
-                    h('span', { className: 'cmp-picker-row-name', title: model.name }, model.name),
-                    // Provider name beside the model name, so MRU rows are
-                    // unambiguous when the same model id exists under several providers.
+                    // Provider prefix on the LEFT of the model name, so MRU rows
+                    // read as "provider · model" and stay unambiguous when the
+                    // same model id exists under several providers.
                     h('span', { className: 'cmp-picker-row-provider', title: providerLabel(group, L) }, providerLabel(group, L)),
+                    h('span', { className: 'cmp-picker-row-name', title: model.name }, model.name),
                     unreasoningBadge(model) && h('span', { className: 'cmp-picker-badge' }, L('badge.reasoning')),
                     tagsFor(model, group, inputMap, L).map(tag => h('span', { key: tag.key, className: 'cmp-picker-cap' }, tag.label)),
                   ),
