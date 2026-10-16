@@ -46,6 +46,23 @@ per-session 模型目录与 `selectModel` 提交路径（"任一端切换，另�
 > `providers.volcengine-agent-plan` 这类配置 key 能被可靠匹配；若未来 DSH
 > 改变这一命名约定，标签会安静地不显示（不会报错），插件其余功能不受影响。
 
+> **为什么只能从配置读（已验证）**：浏览器侧拿到的 `modelCatalog` RPC 返回的
+> 模型对象**只有 `id` / `name` / `description` / `reasoning`，不含 `input`** ——
+> DSH 的 Host 侧在构建浏览器目录时把 `input` 字段投影丢弃了（见
+> `buildModelCatalog`）。因此插件无法从模型目录兜底读取能力，配置是浏览器侧
+> 唯一的 `input` 来源。想给某个模型显示能力标签，就在 pi-ai 提供商配置里为它
+> 写 `input`：
+>
+> ```yaml
+> # profile 的 cordis.patch.yml，llm-pi-ai 提供商配置内
+> models:
+>   - id: deepseek-v4-flash-ga-260731
+>     input: [text, image]   # 声明后插件即显示「文本 / 图像」标签
+> ```
+>
+> 这也解释了为什么**同一个模型 id 在不同用户那里标签可能不同**——它如实反映
+> 各自配置，而非模型本身的客观能力。
+
 ## 工作原理
 
 1. 注册进 composer 的 **`conversation.input.right`** slot —— 这是一个

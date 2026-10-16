@@ -59,6 +59,25 @@ accordingly.
 > future DSH change this naming contract, the tags silently disappear (no error)
 > while the rest of the plugin keeps working.
 
+> **Why config is the only source (verified)**: the model objects returned by the
+> browser-side `modelCatalog` RPC carry **only `id` / `name` / `description` /
+> `reasoning` — no `input`**: DSH's Host side drops the `input` field when it
+> projects the browser catalog (see `buildModelCatalog`). So the plugin cannot
+> fall back to the model directory for capabilities; config is the only
+> browser-visible `input` source. To show capability tags for a model, declare
+> `input` for it in the pi-ai provider config:
+>
+> ```yaml
+> # inside your profile's cordis.patch.yml, under the llm-pi-ai provider config
+> models:
+>   - id: deepseek-v4-flash-ga-260731
+>     input: [text, image]   # once declared, the plugin shows the text/image tags
+> ```
+>
+> This also explains why the **same model id can show different tags for
+> different users** — the tags honestly reflect each user's own config, not the
+> model's objective capabilities.
+
 ## How it works
 
 1. Registers into the **`conversation.input.right`** slot of the composer — an
