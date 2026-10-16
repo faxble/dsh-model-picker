@@ -36,6 +36,12 @@ per-session 模型目录与 `selectModel` 提交路径（"任一端切换，另�
 建索引；配置里没写 `input` 的提供商就不显示标签（如实反映配置，不做臆测）。
 增删配置里的 `input`，标签随之变化。
 
+> **契约说明（已验证）**：能力标签用 `group.id` 查询索引，而 `group.id` 与
+> settings 中 `providers` 的**配置 key 同命名空间**（DSH 的 modelCatalog 以
+> `provider.id` 作为分组 id、`provider.name` 作为显示名）。因此
+> `providers.volcengine-agent-plan` 这类配置 key 能被可靠匹配；若未来 DSH
+> 改变这一命名约定，标签会安静地不显示（不会报错），插件其余功能不受影响。
+
 ## 工作原理
 
 1. 注册进 composer 的 **`conversation.input.right`** slot —— 这是一个
@@ -98,35 +104,45 @@ dsh-model-picker/
 ├── package.json        # 包元数据 + dsh.client 声明（platform: web）
 ├── index.js            # Host 半身（no-op，仅承载 bundle 行）
 ├── cordis.patch.yml    # bundle patch：一行 insert（name 为裸包名）
-├── client.js           # 浏览器半身：ModuleLoader bundle（全部 UI）
-├── install.ps1         # 安装提示脚本
+├── client.js           # 浏览器半身：ModuleLoader bundle（由 src/ 构建）
+├── install.ps1         # 安装脚本（web / desktop）
+├── src/                # 源码（ES modules，开发用）
+│   ├── dict.js         #   zh/en 文案字典
+│   ├── pure.js         #   纯逻辑：排序/搜索打分/MRU/能力标签（单测覆盖）
+│   ├── style.js        #   CSS（主题变量）
+│   ├── icons.js        #   SVG 图标
+│   └── entry.js        #   ModuleLoader bundle 入口（组件 + apply）
+├── scripts/build.mjs   # esbuild 打包脚本
+├── test/               # node:test 单元测试
 └── README.md
 ```
 
 ## 说明
 
-- 纯前端插件：**无构建步骤、无运行时依赖**（只用 shell 已提供的 `react`），
+- 纯前端插件：**运行时无构建、无运行时依赖**（只用 shell 已提供的 `react`），
   全部颜色来自 DSH 主题 CSS 变量，切换深浅色主题无需重载。
+  `client.js` 是构建产物，开发期用 `pnpm build` 从 `src/` 生成。
 - 不修改任何 DSH 核心代码；`conversation.input.right` 目前没有任何占用者，
   注册不会遮蔽既有 UI。
 - 界面文案**中英双语**，随 DSH 系统语言自动切换（zh / en），外国用户可直接使用。
+- 附加功能：**最近使用（MRU）置顶**、**搜索打分排序**（精确 > 前缀 > 包含）、
+  **推理档位（reasoning effort）选择器**、大列表**懒渲染**、焦点陷阱等无障碍支持。
 - 主题取值注意：**不要用 `--dsw-alias-brand-text` 做选中行文字色** ——
   它的语义是"品牌色块**上**的文字"（浅色主题设计值），深色主题下解析为深色，
   配软高亮底会变成黑字看不清；文字统一用 `--dsw-alias-label-primary`。
 
 ## 开发调试
 
-- `file:` 安装会把插件目录内容**复制**进
-  `%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-model-picker`；
-  改源码后把 `client.js` 复制过去即可触发 HMR 热更新（页面无需刷新，
-  DSH 会检测到文件变更并重新加载 bundle）：
+- 改 `src/` 后执行 `pnpm build` 重新生成 `client.js`，再复制到 profile 触发
+  HMR 热更新（页面无需刷新，DSH 会检测到文件变更并重新加载 bundle）：
 
   ```powershell
+  pnpm build
   Copy-Item .\client.js $env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-model-picker\client.js -Force
   ```
 
-- 改完务必先 `node --check client.js`：这是手写 bundle，语法错误会让整个
-  bundle 加载失败（按钮直接消失）。特别注意 **CSS 模板字符串里不能出现反引号**，
-  否则模板被提前截断，后续 CSS 会被当 JS 解析。
+- 单元测试：`pnpm test`（`node --test`，覆盖 `src/pure.js` 的纯逻辑）。
+- 构建校验：`pnpm check`（`node --check` 产物）。**CI 会校验 `client.js` 是否为
+  最新构建**，改了 `src/` 忘了 build 会让 CI 失败。
 - 若要源码改动即时生效（免复制），改用 `link:` 符号链接方式安装。
 - 移除插件：DSH「设置 → 插件」里卸载 `dsh-model-picker` 即可。

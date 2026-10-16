@@ -48,6 +48,13 @@ providers without an `input` field in config show no tags (an honest reflection 
 config, no guessing). Add or remove `input` in config and the tags update
 accordingly.
 
+> **Contract note (verified)**: tags are looked up by `group.id`, which shares a
+> namespace with the **provider config keys** in settings (DSH's modelCatalog uses
+> `provider.id` as the group id and `provider.name` as the display name). So a
+> config key like `providers.volcengine-agent-plan` is matched reliably; should a
+> future DSH change this naming contract, the tags silently disappear (no error)
+> while the rest of the plugin keeps working.
+
 ## How it works
 
 1. Registers into the **`conversation.input.right`** slot of the composer — an
@@ -117,20 +124,33 @@ dsh-model-picker/
 ├── package.json        # package metadata + dsh.client declaration (platform: web)
 ├── index.js            # host half (no-op, just carries the bundle line)
 ├── cordis.patch.yml    # bundle patch: a one-line insert (name is the bare package name)
-├── client.js           # browser half: ModuleLoader bundle (all the UI)
-├── install.ps1         # install helper script
+├── client.js           # browser half: ModuleLoader bundle (built from src/)
+├── install.ps1         # install script (web / desktop)
+├── src/                # source (ES modules, for development)
+│   ├── dict.js         #   zh/en copy dictionaries
+│   ├── pure.js         #   pure logic: sorting / search scoring / MRU / tags (unit-tested)
+│   ├── style.js        #   CSS (theme tokens)
+│   ├── icons.js        #   inline SVG icons
+│   └── entry.js        #   ModuleLoader bundle entry (component + apply)
+├── scripts/build.mjs   # esbuild bundler
+├── test/               # node:test unit tests
 └── README.md
 ```
 
 ## Notes
 
-- Pure frontend plugin: **no build step, no runtime dependencies** (only the
-  `react` already provided by the shell); all colors come from DSH theme CSS
-  variables, and switching light/dark themes needs no reload.
+- Pure frontend plugin: **no runtime build step, no runtime dependencies** (only
+  the `react` already provided by the shell); all colors come from DSH theme CSS
+  variables, and switching light/dark themes needs no reload. `client.js` is a
+  build artifact generated from `src/` via `pnpm build`.
 - Modifies no DSH core code; `conversation.input.right` currently has no other
   consumers, so registering it shadows nothing.
 - UI copy is **bilingual (zh / en)** and follows the DSH system language
   automatically — non-Chinese users can use it as-is.
+- Extras: **recently-used (MRU) section pinned on top**, **ranked search**
+  (exact > prefix > substring), a **reasoning-effort picker**, **lazy rendering**
+  for large model lists, and accessibility support (focus trap, focus restore,
+  aria-live, keyboard navigation).
 - Theme note: **do not use `--dsw-alias-brand-text` for selected-row text color**
   — its semantics is "text **on** the brand color block" (designed for light
   themes); under dark themes it resolves to a dark color that becomes unreadable
@@ -138,20 +158,18 @@ dsh-model-picker/
 
 ## Development & debugging
 
-- A `file:` install **copies** the plugin directory into
-  `%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-model-picker`;
-  after editing source, copy `client.js` over to trigger an HMR hot reload
-  (no page refresh needed — DSH detects the file change and reloads the bundle):
+- After editing `src/`, run `pnpm build` to regenerate `client.js`, then copy it
+  into the profile to trigger an HMR hot reload (no page refresh needed — DSH
+  detects the file change and reloads the bundle):
 
   ```powershell
+  pnpm build
   Copy-Item .\client.js $env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-model-picker\client.js -Force
   ```
 
-- Always run `node --check client.js` after editing: this is a hand-written
-  bundle, and a syntax error fails the whole bundle (the button simply
-  disappears). In particular, **backticks must not appear inside CSS template
-  strings**, or the template is truncated early and the rest of the CSS is parsed
-  as JS.
+- Unit tests: `pnpm test` (`node --test`, covers the pure logic in `src/pure.js`).
+- Build check: `pnpm check` (`node --check` on artifacts). **CI fails if the
+  committed `client.js` is stale** — always build after editing `src/`.
 - For source edits to take effect instantly (no copying), install with a `link:`
   symlink instead.
 - To remove the plugin: uninstall `dsh-model-picker` under DSH Settings → Plugins.

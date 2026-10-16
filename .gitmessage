@@ -1,0 +1,9 @@
+# <type>(<scope>): <subject>      # e.g. feat(core): add MRU section
+#                                  #      fix(accessibility): trap focus in dialog
+#
+# Types: feat | fix | docs | refactor | perf | test | ci | chore
+# Scopes: core (client bundle) | build | docs | ci | test
+#
+# - Subject: imperative, <= 72 chars, English preferred
+# - Body: what & why (not how), wrap at 72 chars
+# - Keep each commit focused on one concern
