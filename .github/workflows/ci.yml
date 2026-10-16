@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Test & build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Syntax check (hand-written + built bundle)
+        run: pnpm check
+
+      - name: Unit tests (src/pure.js)
+        run: pnpm test
+
+      - name: Rebuild bundle from src/ and verify it is committed up-to-date
+        run: |
+          pnpm build
+          git diff --exit-code -- client.js || { echo "client.js is stale — run pnpm build and commit the result"; exit 1; }
