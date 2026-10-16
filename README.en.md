@@ -151,6 +151,10 @@ dsh-model-picker/
   (exact > prefix > substring), a **reasoning-effort picker**, **lazy rendering**
   for large model lists, and accessibility support (focus trap, focus restore,
   aria-live, keyboard navigation).
+  - Each recently-used row reads **`provider · model`** (e.g.
+    `Volcengine · deepseek-v4-flash-ga`); the provider is shown on the LEFT of the
+    model name, localized and dimmed, so the same model id under different
+    providers is never ambiguous.
 - Theme note: **do not use `--dsw-alias-brand-text` for selected-row text color**
   — its semantics is "text **on** the brand color block" (designed for light
   themes); under dark themes it resolves to a dark color that becomes unreadable
