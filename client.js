@@ -1,4 +1,9 @@
 /* dsh-model-picker — generated from src/ by `pnpm build`. Do not edit directly. */
+/* Function scope on purpose: DSH executes this bundle as a CLASSIC script,
+   so esbuild's hoisted module-level `var` bindings would otherwise be
+   assigned on `window`. A top-level `var CSS` overwrote window.CSS with the
+   style string and made every host popover throw in CSS.supports(). */
+;(() => {
 
 // src/dict.js
 var zh = {
@@ -61,7 +66,7 @@ var en = {
 };
 
 // src/style.js
-var CSS = `
+var PICKER_CSS = `
 .cmp-picker-trigger {
   display: grid;
   place-items: center;
@@ -1465,7 +1470,7 @@ window.__ModuleLoader__.load({
       ctx.effect(() => {
         const style = document.createElement("style");
         style.setAttribute("data-plugin", ID);
-        style.textContent = CSS;
+        style.textContent = PICKER_CSS;
         document.head.appendChild(style);
         return () => {
           style.remove();
@@ -1506,3 +1511,4 @@ window.__ModuleLoader__.load({
     return module.exports;
   }
 });
+})();

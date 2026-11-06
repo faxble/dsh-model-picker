@@ -19,7 +19,7 @@
  */
 
 import { zh, en } from './dict.js'
-import { CSS } from './style.js'
+import { PICKER_CSS } from './style.js'
 import {
   orderGroups, providerLabel, EMPTY_STATE, loadInputModalities, tagsFor,
   fill, searchRows, loadMRU, saveMRU, recordMRU, parseMRUKey, resolveMRU,
@@ -672,7 +672,7 @@ window.__ModuleLoader__.load({
       ctx.effect(() => {
         const style = document.createElement('style')
         style.setAttribute('data-plugin', ID)
-        style.textContent = CSS
+        style.textContent = PICKER_CSS
         document.head.appendChild(style)
         return () => { style.remove() }
       }, 'dsh-model-picker: styles')

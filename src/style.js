@@ -1,5 +1,9 @@
 /** All styles for dsh-model-picker — theme-token driven, injected once. */
-export const CSS = `
+// Deliberately NOT named `CSS`: the CJS bundle hoists module-level `var`
+// bindings to the script's top level, and DSH executes that bundle as a
+// classic script — a top-level `var CSS` would overwrite `window.CSS` with
+// the style string and break every host popover that calls CSS.supports().
+export const PICKER_CSS = `
 .cmp-picker-trigger {
   display: grid;
   place-items: center;

@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-picker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "模型速选器（Model Quick Picker）：在会话窗口右下角模型下拉的左侧添加一个小按钮，点击弹出全量模型选择窗口（提供商分组、搜索、提供商筛选、真实 input 能力标签、推理徽章、当前选中高亮），选择后实时回写模型下拉框并立即生效。",
   "main": "./index.js",
