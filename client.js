@@ -834,7 +834,7 @@ var IconClock = (h) => () => h(
 
 // src/entry.js
 window.__ModuleLoader__.load({
-  id: "dsh-model-picker",
+  id: "@faxble/dsh-model-picker",
   factory: (require2) => {
     const module = { exports: {} };
     const exports = module.exports;
@@ -1507,7 +1507,7 @@ window.__ModuleLoader__.load({
     }
     exports.apply = apply;
     exports.inject = inject;
-    exports.name = "dsh-model-picker";
+    exports.name = "@faxble/dsh-model-picker";
     return module.exports;
   }
 });

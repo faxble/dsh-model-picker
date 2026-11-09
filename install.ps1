@@ -1,13 +1,15 @@
-# dsh-model-picker 安装脚本
+# @faxble/dsh-model-picker 安装脚本
 # 支持 web 与 desktop 两个 profile（platform: web 的插件在两者中均生效）。
 #
 # 用法（在 PowerShell 中执行，任选其一）：
-#   .\install.ps1                        # 默认安装到 web profile（本地目录）
+#   .\install.ps1                        # 默认从 npm 安装到 web profile
 #   .\install.ps1 -Profile desktop       # 安装到 desktop profile
-#   .\install.ps1 -FromGitHub            # 免 clone，直接从 GitHub 远程安装
+#   .\install.ps1 -FromGitHub            # 免 npm，直接从 GitHub 远程安装
+#   .\install.ps1 -FromLocal             # 从本地目录安装（开发者调试）
 param(
     [string]$Profile = 'web',
     [switch]$FromGitHub,
+    [switch]$FromLocal,
     [string]$PluginDir = $PSScriptRoot
 )
 
@@ -24,14 +26,19 @@ if ($FromGitHub) {
     dsh plugin --profile $Profile add github:faxble/dsh-model-picker
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
-else {
+elseif ($FromLocal) {
     $spec = "file:$PluginDir"
     Write-Host "通过本地路径安装到 '$Profile' profile：$spec"
     dsh plugin --profile $Profile add $spec
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+else {
+    Write-Host "从 npm 安装到 '$Profile' profile ..."
+    dsh plugin --profile $Profile add '@faxble/dsh-model-picker'
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 Write-Host ""
 Write-Host "安装完成。接下来："
 Write-Host "  1. 重启 DeepSeek Harness；"
-Write-Host "  2. 设置 → 插件 → 启用 dsh-model-picker。"
+Write-Host "  2. 设置 → 插件 → 启用 @faxble/dsh-model-picker。"

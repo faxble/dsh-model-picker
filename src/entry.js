@@ -29,7 +29,7 @@ import {
 } from './icons.js'
 
 window.__ModuleLoader__.load({
-  id: 'dsh-model-picker',
+  id: '@faxble/dsh-model-picker',
   factory: require => {
     const module = { exports: {} }
     const exports = module.exports
@@ -713,7 +713,7 @@ window.__ModuleLoader__.load({
 
     exports.apply = apply
     exports.inject = inject
-    exports.name = 'dsh-model-picker'
+    exports.name = '@faxble/dsh-model-picker'
     return module.exports
   },
 })

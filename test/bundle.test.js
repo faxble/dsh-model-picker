@@ -41,7 +41,7 @@ test('client.js as classic script does not clobber window.CSS', () => {
 
   // The bundle must still register with the module loader (IIFE runs synchronously).
   assert.ok(loaded, 'bundle must call window.__ModuleLoader__.load')
-  assert.equal(loaded.id, 'dsh-model-picker')
+  assert.equal(loaded.id, '@faxble/dsh-model-picker')
 
   // Internal identifiers must not leak onto the global object.
   for (const name of ['zh', 'en', 'PICKER_CSS', 'IconGrid', 'STORAGE_KEY']) {

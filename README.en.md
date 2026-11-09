@@ -108,35 +108,41 @@ accordingly.
 Works with both the **web and desktop** profiles (a `platform: web` plugin takes
 effect in both).
 
-### Method A: git clone, then install locally (recommended)
+### Method A: Install from npm (recommended)
 
 ```sh
-git clone https://github.com/faxble/dsh-model-picker.git
-dsh plugin --profile web add /path/to/dsh-model-picker
+dsh plugin --profile web add @faxble/dsh-model-picker
 ```
 
-Replace `/path/to/dsh-model-picker` with your actual clone path; for the desktop
-app, just swap `web` for `desktop`:
+For the desktop app, swap `web` for `desktop`:
 
 ```sh
-dsh plugin --profile desktop add /path/to/dsh-model-picker
+dsh plugin --profile desktop add @faxble/dsh-model-picker
 ```
 
-After installing, restart DeepSeek Harness and enable `dsh-model-picker` under
+A prebuilt package skips the `allowBuilds` build-approval step. After installing,
+restart DeepSeek Harness and enable `@faxble/dsh-model-picker` under
 Settings → Plugins, or confirm it was auto-enabled.
 
-### Method B: Install directly from GitHub (no clone)
+### Method B: Install from GitHub source (no clone)
 
 ```sh
 dsh plugin --profile web add github:faxble/dsh-model-picker
 ```
 
-### Method C: Add manually to the profile (developer/debug use)
+### Method C: git clone, then install locally (developer/debug use)
+
+```sh
+git clone https://github.com/faxble/dsh-model-picker.git
+dsh plugin --profile desktop add /path/to/dsh-model-picker
+```
+
+### Method D: Add manually to the profile
 
 1. In the profile (default `%USERPROFILE%\.dsh\profiles\desktop`) `package.json`:
-   - add `"dsh-model-picker": "file:D:\\Dev\\VibeCoding\\dsh-model-picker"` to
+   - add `"@faxble/dsh-model-picker": "file:D:\\Dev\\VibeCoding\\dsh-model-picker"` to
      `dependencies`;
-   - add `"dsh-model-picker"` to `dsh.profile.bundles`.
+   - add `"@faxble/dsh-model-picker"` to `dsh.profile.bundles`.
 2. Run `pnpm install` in the profile directory.
 3. Restart DeepSeek Harness.
 
@@ -191,7 +197,7 @@ dsh-model-picker/
 
   ```powershell
   pnpm build
-  Copy-Item .\client.js $env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-model-picker\client.js -Force
+  Copy-Item .\client.js $env:USERPROFILE\.dsh\profiles\desktop\node_modules\@faxble\dsh-model-picker\client.js -Force
   ```
 
 - Unit tests: `pnpm test` (`node --test`, covers the pure logic in `src/pure.js`).
@@ -199,4 +205,4 @@ dsh-model-picker/
   committed `client.js` is stale** — always build after editing `src/`.
 - For source edits to take effect instantly (no copying), install with a `link:`
   symlink instead.
-- To remove the plugin: uninstall `dsh-model-picker` under DSH Settings → Plugins.
+- To remove the plugin: uninstall `@faxble/dsh-model-picker` under DSH Settings → Plugins.
